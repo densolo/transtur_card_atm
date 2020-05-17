@@ -9,12 +9,14 @@ import (
 	"path/filepath"
 	"transtur_card_atm/config"
 	"transtur_card_atm/server"
+	"github.com/kuznetsovin/go_tachograph_card/tachocard_reader"
 )
 
 
 func main() {
 	log.Printf("Transtur Card ATM")
 	initLogger()
+	initConfig()
 	server.ServeCardFiles()
 }
 
@@ -29,6 +31,13 @@ func initLogger() {
 	}	
 	mw := io.MultiWriter(os.Stdout, f)
 	log.SetOutput(mw)
+}
+
+func initConfig() {
+	appRoot := config.GetAppRoot()
+	uploadDir := filepath.Join(appRoot, "TCReaderUpload")
+	os.MkdirAll(uploadDir, 0755)
+	tachocard_reader.SetUploadDir(uploadDir)
 }
 
 func getTimeSuffix()(string){

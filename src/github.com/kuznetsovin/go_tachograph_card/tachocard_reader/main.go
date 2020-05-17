@@ -14,6 +14,10 @@ func die(err error) {
 	os.Exit(1)
 }
 
+func SetUploadDir(path string) {
+	config.UploadDir = path
+}
+
 func main() {
 	if err := config.init(); err != nil {
 		die(err)
