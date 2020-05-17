@@ -1,6 +1,14 @@
 
 
 
+task goGetAll(type:Exec) {
+  workingDir "${project.projectDir}"
+  environment "GOPATH", "${project.projectDir}"
+
+  commandLine 'go', 'get', 'all'
+}
+
+
 task goBuild(type:Exec) {
   workingDir "${project.projectDir}"
   environment "GOPATH", "${project.projectDir}"
