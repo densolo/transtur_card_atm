@@ -1,4 +1,10 @@
 
+import org.gradle.internal.os.OperatingSystem
+
+ext {
+    isWindows = OperatingSystem.current().isWindows()
+    platformExt = isWindows ? ".exe": ""
+}
 
 
 task goGetAll(type:Exec) {
@@ -13,7 +19,7 @@ task goBuild(type:Exec) {
   workingDir "${project.projectDir}"
   environment "GOPATH", "${project.projectDir}"
 
-  commandLine 'go', 'build', '-o', 'bin/transtur_card_atm', 'src/transtur_card_atm/main/main.go'
+  commandLine 'go', 'build', '-o', "bin/transtur_card_atm${platformExt}", 'src/transtur_card_atm/main/main.go'
 }
 
 
