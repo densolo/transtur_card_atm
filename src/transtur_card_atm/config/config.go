@@ -4,7 +4,7 @@ import (
 	"os"
 	"log"
 	"path/filepath"
-	"strings"
+	//"strings"
 )
 
 type Config struct {
@@ -18,5 +18,5 @@ func GetAppRoot()(string) {
 		return ""
 	}
 	binPath := filepath.Dir(executable)
-	return strings.TrimSuffix(binPath, "bin")
+	return binPath  //strings.TrimSuffix(binPath, "bin")
 }
