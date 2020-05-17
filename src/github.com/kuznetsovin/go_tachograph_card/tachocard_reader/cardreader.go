@@ -41,7 +41,6 @@ func waitCard() (int, error) {
 		return -1, err
 	}
 
-	fmt.Println("Waiting for card insert")
 	return waitUntilCardPresent(ctx, readers)
 }
 
@@ -78,6 +77,8 @@ func CardConnect(indexReader int) (*scard.Context, *scard.Card, error) {
 }
 
 func waitUntilCardPresent(ctx *scard.Context, readers []string) (int, error) {
+	fmt.Println("Waiting until a card is inserted")
+
 	rs := make([]scard.ReaderState, len(readers))
 	for i := range rs {
 		rs[i].Reader = readers[i]
@@ -86,14 +87,16 @@ func waitUntilCardPresent(ctx *scard.Context, readers []string) (int, error) {
 
 	for {
 		for i := range rs {
-			if rs[i].EventState&scard.StatePresent != 0 {
+			log.Printf("Card state at reader [%d]: %d", i, rs[i].EventState)
+			if rs[i].EventState & scard.StatePresent != 0 {
 				return i, nil
 			}
 			rs[i].CurrentState = rs[i].EventState
 		}
 		err := ctx.GetStatusChange(rs, -1)
 		if err != nil {
-			return -1, err
+			log.Printf("Card state error: %s", err.Error())
+			time.Sleep(2 * time.Second)
 		}
 	}
 }
