@@ -1,0 +1,17 @@
+
+
+
+task goBuild(type:Exec) {
+  workingDir "${project.projectDir}"
+  environment "GOPATH", "${project.projectDir}"
+
+  commandLine 'go', 'build', '-o', 'bin/transtur_card_atm', 'src/transtur_card_atm/main/main.go'
+}
+
+
+task goRun(type:Exec) {
+  workingDir "${project.projectDir}"
+  environment "GOPATH", "${project.projectDir}"
+
+  commandLine 'go', 'run', 'src/transtur_card_atm/main/main.go'
+}
