@@ -91,10 +91,10 @@ func ReadСard(pin string, indexReader int) ([]byte, error) {
 		return nil, err
 	}
 
-	if _, err = verify(pin, d); err != nil {
-		ctx.Release()
-		return nil, err
-	}
+	// if _, err = verify(pin, d); err != nil {
+	// 	ctx.Release()
+	// 	return nil, err
+	// }
 
 	for _, fileSign := range cardMF {
 		rf, err := readFile(&fileSign, d)
@@ -104,7 +104,7 @@ func ReadСard(pin string, indexReader int) ([]byte, error) {
 		}
 
 		result_buf.Write(rf)
-		fmt.Printf("Файл %s успешно прочитан.\n", fileSign.Name)
+		fmt.Printf("File %s has been saved.\n", fileSign.Name)
 	}
 
 	_, err = selectFile([]byte{0xFF, 0x54, 0x41, 0x43, 0x48, 0x4F}, d)
@@ -131,7 +131,7 @@ func ReadСard(pin string, indexReader int) ([]byte, error) {
 		}
 
 		result_buf.Write(rf)
-		fmt.Printf("Файл %s успешно прочитан.\n", fileSign.Name)
+		fmt.Printf("File %s has been saved.\n", fileSign.Name)
 	}
 
 	result := result_buf.Bytes()

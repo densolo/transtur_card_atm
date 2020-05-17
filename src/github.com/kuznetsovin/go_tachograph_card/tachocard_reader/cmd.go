@@ -45,11 +45,11 @@ func SaveLocal() error {
 		return err
 	}
 
-	fmt.Print("PIN: ")
-	if err := hideInput(&pin); err != nil {
-		return err
-	}
-
+	// fmt.Print("PIN: ")
+	// if err := hideInput(&pin); err != nil {
+	// 	return err
+	// }
+	
 	dddFile, err := ReadСard(pin, indexReader)
 	if err != nil {
 		return err

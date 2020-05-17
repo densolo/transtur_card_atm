@@ -23,7 +23,7 @@ func checkEnableReaders() error {
 	}
 
 	if len(readers) == 0 {
-		err = errors.New("Не обнаружено ни одного ридера")
+		err = errors.New("Card reader not found")
 	}
 
 	return err
@@ -41,7 +41,7 @@ func waitCard() (int, error) {
 		return -1, err
 	}
 
-	fmt.Println("Ожидаем ввод карты")
+	fmt.Println("Waiting for card insert")
 	return waitUntilCardPresent(ctx, readers)
 }
 
@@ -57,20 +57,20 @@ func CardConnect(indexReader int) (*scard.Context, *scard.Card, error) {
 	}
 	currentReader := readers[indexReader]
 
-	log.Println("Соединение с картой в ридере ", currentReader)
+	log.Println("Connecting to a card ", currentReader)
 	card, err := ctx.Connect(currentReader, scard.ShareExclusive, scard.ProtocolAny)
 	if err != nil {
 		log.Println(err)
-		return nil, nil, errors.New("Невозможно считать карту")
+		return nil, nil, errors.New("Unable to read a card")
 	}
 
-	log.Println("Статус карты:")
+	log.Println("Card status:")
 	if status, err := card.Status(); err != nil {
 		return nil, nil, err
 	} else {
-		log.Println("Ридер: ", status.Reader)
-		log.Println("Статус: ", status.State)
-		log.Println("Активный протокол: ", status.ActiveProtocol)
+		log.Println("Reader: ", status.Reader)
+		log.Println("Status: ", status.State)
+		log.Println("Active Protocol: ", status.ActiveProtocol)
 		log.Println("Atr: ", status.Atr)
 	}
 
@@ -115,7 +115,7 @@ func sendApdu(cmd []byte, card *scard.Card) ([]byte, error) {
 	result = card_resp[:sw_idx]
 
 	if !(sw_byte[0] == 0x90 && sw_byte[1] == 0x00) {
-		error_msg := fmt.Sprintf("Ошибка выполнения команды % x. Код ошибки: %x.\n", cmd, sw_byte)
+		error_msg := fmt.Sprintf("Card command failure: %x. Error code: %x.\n", cmd, sw_byte)
 		return nil, errors.New(error_msg)
 	}
 
