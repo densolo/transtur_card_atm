@@ -100,8 +100,8 @@ func waitUntilCardPresent(ctx *scard.Context, readers []string, readerPattern st
 		err := ctx.GetStatusChange(rs, -1)
 		if err != nil {
 			log.Printf("Card state error: %s", err.Error())
-			time.Sleep(2 * time.Second)
 		}
+		time.Sleep(2 * time.Second)
 	}
 }
 

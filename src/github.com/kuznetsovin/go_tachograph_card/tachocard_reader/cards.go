@@ -173,6 +173,7 @@ func createFileName(ddd []byte) string {
 func SaveDdd(card_ddd []byte) error {
 	uploadFileName := createFileName(card_ddd)
 	path_to_save := filepath.Join(config.UploadDir, uploadFileName)
+	log.Printf("SaveDdd into %s", path_to_save)
 
 	f, err := os.Create(path_to_save)
 	if err != nil {
