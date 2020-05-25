@@ -272,7 +272,7 @@ func waitCardHandler(w http.ResponseWriter, r *http.Request) {
 		Msg:     "0",
 	}
 
-	indexReader, err := waitCard()
+	indexReader, err := waitCard("")
 	if err != nil {
 		log.Println("Card read error:", err)
 		status.Success = false

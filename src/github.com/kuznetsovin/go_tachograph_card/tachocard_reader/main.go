@@ -52,25 +52,15 @@ func main() {
 			msg = save_help()
 		} else {
 			if strings.HasPrefix(second_arg, "mq") {
-				if err := SaveMQ(); err != nil {
-					die(err)
-				}
+				
 			} else {
-				if err := SaveLocal(); err != nil {
+				if err := SaveLocal(""); err != nil {
 					die(err)
 				}
 			}
 			msg = "Карта успешно сохранена"
 		}
-	case "uploadall":
-		if second_arg == "help" {
-			msg = uploadall_help()
-		} else {
-			if err := UploadAll(); err != nil {
-				die(err)
-			}
-		}
-		msg = "Данные успешно отправлены"
+
 	case "serve":
 		if second_arg == "help" {
 			msg = serve_help()
@@ -79,24 +69,7 @@ func main() {
 				die(err)
 			}
 		}
-	case "verify":
-		if second_arg == "help" || second_arg == "" {
-			msg = verify_help()
-		} else {
-			if err := checkPIN(second_arg); err != nil {
-				die(err)
-			}
-			msg = "OK"
-		}
-	case "unblock":
-		if second_arg == "help" {
-			msg = unblock_help()
-		} else {
-			if err := UnblockCard(); err != nil {
-				die(err)
-			}
-			msg = "Карта разблокирована."
-		}
+	
 	case "help":
 		msg = main_help()
 	default:

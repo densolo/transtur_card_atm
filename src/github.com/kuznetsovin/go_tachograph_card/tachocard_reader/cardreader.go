@@ -8,6 +8,7 @@ import (
 	"github.com/ebfe/scard"
 	"log"
 	"time"
+	"strings"
 )
 
 func checkEnableReaders() error {
@@ -29,7 +30,7 @@ func checkEnableReaders() error {
 	return err
 }
 
-func waitCard() (int, error) {
+func waitCard(reader string) (int, error) {
 	ctx, err := scard.EstablishContext()
 	if err != nil {
 		return -1, err
@@ -41,7 +42,16 @@ func waitCard() (int, error) {
 		return -1, err
 	}
 
-	return waitUntilCardPresent(ctx, readers)
+	return waitUntilCardPresent(ctx, readers, reader)
+}
+
+func filter(ss []string, test func(string) bool) (ret []string) {
+    for _, s := range ss {
+        if test(s) {
+            ret = append(ret, s)
+        }
+    }
+    return
 }
 
 func CardConnect(indexReader int) (*scard.Context, *scard.Card, error) {
@@ -76,8 +86,8 @@ func CardConnect(indexReader int) (*scard.Context, *scard.Card, error) {
 	return ctx, card, err
 }
 
-func waitUntilCardPresent(ctx *scard.Context, readers []string) (int, error) {
-	fmt.Println("Waiting until a card is inserted")
+func waitUntilCardPresent(ctx *scard.Context, readers []string, readerPattern string) (int, error) {
+	fmt.Println("Waiting until a card is inserted (reader: %s)", readerPattern)
 
 	rs := make([]scard.ReaderState, len(readers))
 	for i := range rs {
@@ -89,6 +99,9 @@ func waitUntilCardPresent(ctx *scard.Context, readers []string) (int, error) {
 		for i := range rs {
 			log.Printf("Card state at reader [%d] '%s': %d", i, rs[i].Reader, rs[i].EventState)
 			if rs[i].EventState & scard.StatePresent != 0 {
+				if (readerPattern != "" && !strings.Contains(strings.ToLower(rs[i].Reader), strings.ToLower(readerPattern))) {
+					continue
+				}
 				return i, nil
 			}
 			rs[i].CurrentState = rs[i].EventState

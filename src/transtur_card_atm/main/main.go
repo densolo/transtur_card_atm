@@ -7,6 +7,7 @@ import (
 	"time"
 	"fmt"
 	"path/filepath"
+	"flag"
 	"transtur_card_atm/config"
 	"transtur_card_atm/server"
 	"github.com/kuznetsovin/go_tachograph_card/tachocard_reader"
@@ -17,7 +18,11 @@ func main() {
 	log.Printf("Transtur Card ATM")
 	initLogger()
 	initConfig()
-	server.ServeCardFiles()
+
+	reader := flag.String("reader", "", "A card reader name")
+	flag.Parse()
+
+	server.ServeCardFiles(*reader)
 }
 
 
