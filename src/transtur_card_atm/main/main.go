@@ -30,7 +30,7 @@ func initLogger() {
 	appRoot := config.GetAppRoot()
 
 	os.MkdirAll(filepath.Join(appRoot, "logs"), 0755)
-	f, err := os.OpenFile(filepath.Join(appRoot, "logs/transtur_card_atm.log." + getTimeSuffix()), os.O_RDWR | os.O_CREATE | os.O_APPEND, 0666)
+	f, err := os.OpenFile(filepath.Join(appRoot, "logs/transtur_card_atm.log." + getTimeSuffix() + ".txt"), os.O_RDWR | os.O_CREATE | os.O_APPEND, 0666)
 	if err != nil {
 		log.Fatalf("error opening file: %v", err)
 	}	

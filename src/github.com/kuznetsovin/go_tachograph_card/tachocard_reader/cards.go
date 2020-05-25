@@ -131,7 +131,7 @@ func ReadСard(pin string, indexReader int) ([]byte, error) {
 		}
 
 		result_buf.Write(rf)
-		fmt.Printf("Fle %s успешно прочитан.\n", fileSign.Name)
+		fmt.Printf("File %s read successfully.\n", fileSign.Name)
 	}
 
 	result := result_buf.Bytes()
