@@ -15,6 +15,6 @@ func ServeCardFiles(reader string) {
 		if err != nil {
 			log.Printf("Failed to save a card file: " + err.Error())
 		}
-		time.Sleep(1 * time.Second)
+		time.Sleep(15 * time.Second)
 	}
 }
