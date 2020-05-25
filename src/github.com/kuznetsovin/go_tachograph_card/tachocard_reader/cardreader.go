@@ -45,15 +45,6 @@ func waitCard(reader string) (int, error) {
 	return waitUntilCardPresent(ctx, readers, reader)
 }
 
-func filter(ss []string, test func(string) bool) (ret []string) {
-    for _, s := range ss {
-        if test(s) {
-            ret = append(ret, s)
-        }
-    }
-    return
-}
-
 func CardConnect(indexReader int) (*scard.Context, *scard.Card, error) {
 	ctx, err := scard.EstablishContext()
 	if err != nil {

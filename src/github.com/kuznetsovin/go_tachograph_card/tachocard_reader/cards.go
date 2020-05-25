@@ -149,16 +149,17 @@ func createFileName(ddd []byte) string {
 	var cardView, result string
 	var GOST_CERT_SECTION = []byte{0xc2, 0x00}
 
-	cardName := ddd[2233:2249]
-	uploadFileDateTime := time.Now()
+		cardName := ddd[2233:2249]
+		uploadFileDateTime := time.Now()
 
-	if bytes.Equal(ddd[127:129], GOST_CERT_SECTION) {
-		cardView = "RFSKZI"
-	} else {
-		cardView = "ESTR"
-	}
+		if bytes.Equal(ddd[127:129], GOST_CERT_SECTION) {
+			cardView = "RFSKZI"
+		} else {
+			cardView = "ESTR"
+		}
 
-	result = fmt.Sprintf("%s-%s-%d%02d%02d_%02d%02d.ddd", cardView, cardName,
+		// result = fmt.Sprintf("%s-%s-%d%02d%02d_%02d%02d.ddd", cardView, cardName,
+		result = fmt.Sprintf("%s-%s-%d%02d%02d_%02d%02d.ddd", "test", "test",
 		uploadFileDateTime.Year(), uploadFileDateTime.Month(),
 		uploadFileDateTime.Day(), uploadFileDateTime.Hour(),
 		uploadFileDateTime.Minute())
