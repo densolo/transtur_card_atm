@@ -118,7 +118,7 @@ func ReadСard(pin string, indexReader int) ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
-	log.Printf("Read card type: %s", cardType)
+	log.Printf("Read card type: %x", cardType)
 
 	for _, fileSign := range typeCard[cardType] {
 		log.Printf("Reading file '%s'", fileSign.Name)

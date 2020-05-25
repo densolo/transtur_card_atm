@@ -87,7 +87,7 @@ func CardConnect(indexReader int) (*scard.Context, *scard.Card, error) {
 }
 
 func waitUntilCardPresent(ctx *scard.Context, readers []string, readerPattern string) (int, error) {
-	fmt.Println("Waiting until a card is inserted (reader: %s)", readerPattern)
+	log.Printf("Waiting until a card is inserted (reader: %s)", readerPattern)
 
 	rs := make([]scard.ReaderState, len(readers))
 	for i := range rs {
@@ -141,6 +141,7 @@ func sendApdu(cmd []byte, card *scard.Card) ([]byte, error) {
 }
 
 func selectFile(fid []byte, card *scard.Card) ([]byte, error) {
+	log.Printf("selectFile: %x", fid)
 	var cmd []byte
 
 	if fid[0] == 0xFF {
@@ -154,6 +155,7 @@ func selectFile(fid []byte, card *scard.Card) ([]byte, error) {
 }
 
 func readBinary(size int, card *scard.Card) ([]byte, error) {
+	log.Printf("readBinary (%d bytes)", size)
 	READ_BLOCK_SIZE := 200
 	pos := 0
 	cmd := []byte{}
@@ -182,6 +184,7 @@ func readBinary(size int, card *scard.Card) ([]byte, error) {
 		pos = pos + len(tmp_val)
 	}
 
+	log.Printf("readBinary (result: %s)", err)
 	return val, err
 }
 
@@ -286,6 +289,8 @@ func reverseBytes(numbers []byte) []byte {
 var countFieldRec map[string]int
 
 func initCardType(card *scard.Card, countFieldRec *map[string]int) (byte, error) {
+	log.Printf("initCardType")
+
 	var param_bytes []byte
 	var card_type byte
 	var err error
@@ -300,6 +305,7 @@ func initCardType(card *scard.Card, countFieldRec *map[string]int) (byte, error)
 		return 0x00, err
 	}
 	card_type = param_bytes[0]
+	log.Printf("card_type: %x", card_type)
 
 	switch card_type {
 	case 0x01:
