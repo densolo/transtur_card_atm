@@ -87,7 +87,7 @@ func waitUntilCardPresent(ctx *scard.Context, readers []string) (int, error) {
 
 	for {
 		for i := range rs {
-			log.Printf("Card state at reader [%d]: %d", i, rs[i].EventState)
+			log.Printf("Card state at reader [%d] '%s': %d", i, rs[i].Reader, rs[i].EventState)
 			if rs[i].EventState & scard.StatePresent != 0 {
 				return i, nil
 			}
@@ -102,10 +102,12 @@ func waitUntilCardPresent(ctx *scard.Context, readers []string) (int, error) {
 }
 
 func sendApdu(cmd []byte, card *scard.Card) ([]byte, error) {
+	log.Printf("SEND: %x", cmd)
 	var sw_idx, resp_len int
 	var result, sw_byte []byte
 
 	card_resp, err := card.Transmit(cmd)
+	log.Printf("RECV: %x", card_resp)
 
 	if err != nil {
 		return nil, err
@@ -400,7 +402,8 @@ func readFile(cf *CardFile, card *scard.Card) ([]byte, error) {
 
 		signature, err := computeDigitalSignature(card)
 		if err != nil {
-			return nil, err
+			log.Printf("Failed to compute signature: %x", err)
+			return result, nil
 		}
 
 		result = append(result, fid...)
