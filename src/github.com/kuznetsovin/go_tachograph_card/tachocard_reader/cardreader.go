@@ -428,6 +428,7 @@ func readFile(cf *CardFile, card *scard.Card) ([]byte, error) {
 }
 
 func UpdateUploadDate(fid [2]byte, card *scard.Card) error {
+	log.Printf("UpdateUploadDate")
 	if _, err := selectFile(fid[:], card); err != nil {
 		return err
 	}
