@@ -6,6 +6,7 @@ import (
 	"os"
 	"path/filepath"
 	"time"
+	"log"
 )
 
 var cardMF = []CardFile{
@@ -117,8 +118,10 @@ func ReadСard(pin string, indexReader int) ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
+	log.Printf("Read card type: %s", cardType)
 
 	for _, fileSign := range typeCard[cardType] {
+		log.Printf("Reading file '%s'", fileSign.Name)
 		if fileSign.Name == "EF_Card_Download" {
 			if err := UpdateUploadDate(fileSign.Tag, d); err != nil {
 				return nil, err
@@ -126,8 +129,10 @@ func ReadСard(pin string, indexReader int) ([]byte, error) {
 		}
 		rf, err := readFile(&fileSign, d)
 		if err != nil {
-			ctx.Release()
-			return nil, err
+			log.Printf("Failed to read file '%s': %s", fileSign.Name, err)
+			continue
+			// ctx.Release()
+			// return nil, err
 		}
 
 		result_buf.Write(rf)
