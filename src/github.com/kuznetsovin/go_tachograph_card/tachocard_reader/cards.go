@@ -16,6 +16,8 @@ var cardMF = []CardFile{
 
 var cardGDriver = []CardFile{
 	CardFile{"EF_Application_Identification", [2]byte{0x05, 0x01}, 10, 10, true},
+	CardFile{"EF_Card_Certificate", [2]byte{0xC2, 0x00}, 194, 194, false},
+	CardFile{"EF_CA_Certificate", [2]byte{0xC2, 0x08}, 194, 194, false},
 	CardFile{"EF_Card_Certificate_GOST", [2]byte{0xC2, 0x00}, 1000, 1000, false},
 	CardFile{"EF_Key_Identificators", [2]byte{0xC2, 0x01}, 16, 16, true},
 	CardFile{"EF_CA_Certificate_GOST", [2]byte{0xC2, 0x08}, 1000, 1000, false},
