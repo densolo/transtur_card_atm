@@ -196,7 +196,7 @@ func performHash(card *scard.Card) ([]byte, error) {
 }
 
 func computeDigitalSignature(card *scard.Card) ([]byte, error) {
-	cmd := []byte{0x00, 0x2A, 0x9E, 0x9A, 0x40}
+	cmd := []byte{0x00, 0x2A, 0x9E, 0x9A, 0x80}
 	return sendApdu(cmd, card)
 }
 
