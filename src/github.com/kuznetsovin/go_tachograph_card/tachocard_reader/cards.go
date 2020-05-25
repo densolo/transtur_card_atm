@@ -159,10 +159,13 @@ func createFileName(ddd []byte) string {
 		}
 
 		// result = fmt.Sprintf("%s-%s-%d%02d%02d_%02d%02d.ddd", cardView, cardName,
+		log.Printf("cardView: %s", cardView)
+		log.Printf("cardName: %s", cardName)
+	
 		result = fmt.Sprintf("%s-%s-%d%02d%02d_%02d%02d.ddd", "test", "test",
-		uploadFileDateTime.Year(), uploadFileDateTime.Month(),
-		uploadFileDateTime.Day(), uploadFileDateTime.Hour(),
-		uploadFileDateTime.Minute())
+			uploadFileDateTime.Year(), uploadFileDateTime.Month(),
+			uploadFileDateTime.Day(), uploadFileDateTime.Hour(),
+			uploadFileDateTime.Minute())
 
 	return result
 }
