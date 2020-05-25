@@ -416,9 +416,6 @@ func readFile(cf *CardFile, card *scard.Card) ([]byte, error) {
 			return result, nil
 		}
 
-		// function ddd_append_signature(ef, signature)
-		// 	ddd = bytes.concat(ddd,ef,01,bit.SHR(#signature,8),bit.AND(#signature,0xFF),signature)
-		// end
 		result = append(result, fid...)
 		result = append(result, []byte{0x01, 0x00, 0x80}...)
 		result = append(result, signature...)
