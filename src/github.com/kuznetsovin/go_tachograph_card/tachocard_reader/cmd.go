@@ -15,23 +15,7 @@ func hideInput(param *string) error {
 }
 
 func SaveLocal(reader string) error {
-	var pin string
-
-	if err := checkEnableReaders(); err != nil {
-		return err
-	}
-
-	indexReader, err := waitCard(reader)
-	if err != nil {
-		return err
-	}
-
-	// fmt.Print("PIN: ")
-	// if err := hideInput(&pin); err != nil {
-	// 	return err
-	// }
-	
-	dddFile, err := ReadСard(pin, indexReader)
+	dddFile, err := WaitAndReadCard(reader)
 	if err != nil {
 		return err
 	}
@@ -40,4 +24,19 @@ func SaveLocal(reader string) error {
 		return err
 	}
 	return err
+}
+
+func WaitAndReadCard(reader string) (dddFile []byte, err error) {
+	var pin string
+
+	if err = checkEnableReaders(); err != nil {
+		return []byte{}, err
+	}
+
+	indexReader, err := waitCard(reader)
+	if err != nil {
+		return []byte{}, err
+	}
+
+	return ReadСard(pin, indexReader)
 }

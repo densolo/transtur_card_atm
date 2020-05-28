@@ -11,7 +11,7 @@ type Config struct {
 	
 }
 
-func GetAppRoot()(string) {
+func GetAppRoot() string {
 	executable, err := filepath.Abs(os.Args[0])
 	if err != nil {
 		log.Fatalf("Cannot determine path root: " + err.Error())
@@ -19,4 +19,8 @@ func GetAppRoot()(string) {
 	}
 	binPath := filepath.Dir(executable)
 	return binPath  //strings.TrimSuffix(binPath, "bin")
+}
+
+func GetUploadDir() string {
+	return filepath.Join(GetAppRoot(), "TCReaderUpload")
 }
