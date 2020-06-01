@@ -6,6 +6,12 @@ ext {
     platformExt = isWindows ? ".exe": ""
 }
 
+task npmBuild(type:Exec) {
+  workingDir "${project.projectDir}/web"
+  
+  commandLine 'npm', 'run', 'build'
+}
+
 
 task goGetAll(type:Exec) {
   workingDir "${project.projectDir}"

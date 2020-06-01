@@ -23,7 +23,8 @@ func main() {
 	flag.Parse()
 
 	
-	server.ServeCardFiles(*reader)
+	go server.ServeCardFiles(*reader)
+	server.RunGui()
 }
 
 

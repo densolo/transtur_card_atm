@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+        
+        
+        <link rel="stylesheet" href="css/bootstrap.min.css" crossorigin="anonymous"/>
+        
+        <%= htmlWebpackPlugin.tags.headTags %>
+    </head>
+<body class="text-center">
+    <div id="app" class="app"></div>
+    
+    <%= htmlWebpackPlugin.tags.bodyTags %>
+</body>
+</html>

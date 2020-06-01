@@ -1,0 +1,49 @@
+{
+  "name": "transtur_card_atm",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "clean": "rm -fR ./dist/* ./htmlpage/js/*bundle*.js* ./htmlpage/*.html",
+    "build": "bash build_web.sh",
+    "compile": "tsc",
+    "test": "jest --no-cache",
+    "start": "webpack-dev-server --open"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/react": "^16.9.35",
+    "@types/react-redux": "^7.1.9",
+    "app-module-path": "^2.2.0",
+    "bootstrap": "^4.5.0",
+    "css-loader": "^3.5.3",
+    "jquery": "^3.5.1",
+    "js-yaml": "^3.13.1",
+    "lodash": "^4.17.15",
+    "pdfmake": "^0.1.65",
+    "popper.js": "^1.16.1",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "react-redux": "^7.2.0",
+    "readesm-js": "^1.0.11",
+    "redux": "^4.0.5",
+    "style-loader": "^1.2.1",
+    "svg-to-pdfkit": "^0.1.8",
+    "webpack-dev-server": "^3.11.0"
+  },
+  "devDependencies": {
+    "@types/jest": "^25.2.1",
+    "@types/node": "^7.10.9",
+    "html-loader": "^1.1.0",
+    "html-webpack-plugin": "^4.2.0",
+    "jest": "^25.4.0",
+    "redux-devtools": "^3.5.0",
+    "ts-jest": "^25.3.1",
+    "ts-loader": "^6.2.2",
+    "ts-node": "^8.9.0",
+    "typescript": "^3.8.3",
+    "webpack": "^4.42.1",
+    "webpack-cli": "^3.3.11"
+  }
+}

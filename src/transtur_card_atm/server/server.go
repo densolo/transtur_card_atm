@@ -16,13 +16,16 @@ func ServeCardFiles(reader string) {
 	log.Printf("Serving cards (reader: %s)", reader)
 
 	for {
+		SendGreyState("Checking Card")
 		cardData, err := tachocard_reader.WaitAndReadCard(reader)
 		if err != nil {
+			SendRedState(err.Error())
 			log.Printf("Failed to read a card data: " + err.Error())
 			time.Sleep(15 * time.Second)
 			continue
 		}
 
+		SendBlueState("Parsing Card Data")
 		ef, err := readesm.ParseData(cardData)
 		if (err != nil) {
 			log.Printf("Failed to parse DDD: %s", err)
@@ -30,6 +33,7 @@ func ServeCardFiles(reader string) {
 			continue
 		}
 
+		SendBlueState("Saving Card Data")
 		fileName := CreateFileName(ef, time.Now())
 		err = SaveDdd(cardData, fileName)
 		if (err != nil) {
@@ -38,6 +42,7 @@ func ServeCardFiles(reader string) {
 			continue
 		}
 
+		SendBlueState("Completed")
 		time.Sleep(15 * time.Second)
 	}
 }
