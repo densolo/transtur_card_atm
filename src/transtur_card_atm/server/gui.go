@@ -65,23 +65,6 @@ func RunGui() {
 	if err != nil {
 		l.Fatal(fmt.Errorf("running bootstrap failed: %w", err))
 	}
-
-	// // Initialize astilectron
-	// var a, _ = astilectron.New(log.New(os.Stderr, "", 0), astilectron.Options{
-	// 	AppName: "Transtur",
-	// 	//AppIconDefaultPath: "<your .png icon>", // If path is relative, it must be relative to the data directory
-	// 	//AppIconDarwinPath:  "<your .icns icon>", // Same here
-	// 	BaseDirectoryPath: "runtime",
-	// 	VersionAstilectron: "0.33.0",
-	// 	VersionElectron: "6.1.2",
-	// })
-	// defer a.Close()
-
-	// // Start astilectron
-	// a.Start()
-
-	// // Blocking pattern
-	// a.Wait()
 }
 
 func handleMessages(_ *astilectron.Window, m bootstrap.MessageIn) (payload interface{}, err error) {

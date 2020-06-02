@@ -11,7 +11,7 @@ import (
 	"strings"
 )
 
-func checkEnableReaders() error {
+func CheckEnableReaders() error {
 	ctx, err := scard.EstablishContext()
 	if err != nil {
 		return err
@@ -30,7 +30,7 @@ func checkEnableReaders() error {
 	return err
 }
 
-func waitCard(reader string) (int, error) {
+func WaitCard(reader string) (int, error) {
 	ctx, err := scard.EstablishContext()
 	if err != nil {
 		return -1, err

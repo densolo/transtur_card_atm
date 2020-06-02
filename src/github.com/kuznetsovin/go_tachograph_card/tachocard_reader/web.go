@@ -249,7 +249,7 @@ func readerCheckerHandler(w http.ResponseWriter, r *http.Request) {
 		Msg:     "Ожидаем карту",
 	}
 
-	if err := checkEnableReaders(); err != nil {
+	if err := CheckEnableReaders(); err != nil {
 		log.Println("Find cardreader error:", err)
 		status.Success = false
 		status.Msg = "Не обнаружено ни одного ридера"
@@ -272,7 +272,7 @@ func waitCardHandler(w http.ResponseWriter, r *http.Request) {
 		Msg:     "0",
 	}
 
-	indexReader, err := waitCard("")
+	indexReader, err := WaitCard("")
 	if err != nil {
 		log.Println("Card read error:", err)
 		status.Success = false

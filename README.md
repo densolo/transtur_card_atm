@@ -2,20 +2,19 @@
 ## How to build
 
 Prerequisites:
-
 - java
 - nodejs
-- golan
+- golang
 
 Install depedencies:
 ```
-./gradlew npmInstall
-./gradlew goGetAll
+gradlew npmInstall
+gradlew goGetAll
 ```
 
 Build
 ```
-./gradlew distZip
+gradlew distZip
 ```
 
 Find a distributive in build/distributions/transtur_card_atm.zip

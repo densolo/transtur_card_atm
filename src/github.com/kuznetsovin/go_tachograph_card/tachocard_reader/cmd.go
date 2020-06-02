@@ -29,11 +29,11 @@ func SaveLocal(reader string) error {
 func WaitAndReadCard(reader string) (dddFile []byte, err error) {
 	var pin string
 
-	if err = checkEnableReaders(); err != nil {
+	if err = CheckEnableReaders(); err != nil {
 		return []byte{}, err
 	}
 
-	indexReader, err := waitCard(reader)
+	indexReader, err := WaitCard(reader)
 	if err != nil {
 		return []byte{}, err
 	}
