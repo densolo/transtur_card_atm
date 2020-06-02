@@ -8,6 +8,7 @@ plugins {
 ext {
     isWindows = OperatingSystem.current().isWindows()
     platformExt = isWindows ? ".exe": ""
+    platformCmdExt = isWindows ? ".cmd": ""
 }
 
 
@@ -17,26 +18,34 @@ task copyCss(type:Copy) {
     include "bootstrap.min.css"
 }
 
-task npmBuild(type:Exec) {
-  workingDir "${project.projectDir}/web"
+task npmInstall(type:Exec) {
+    workingDir "${project.projectDir}/web"
   
-  commandLine 'npm', 'run', 'build'
+    commandLine "npm${platformCmdExt}", 'install'
+}
+
+
+task npmBuild(type:Exec) {
+    workingDir "${project.projectDir}/web"
+  
+    commandLine "npm${platformCmdExt}", 'run', 'build'
 }
 npmBuild.dependsOn copyCss
 
 
 task goGetAll(type:Exec) {
-  workingDir "${project.projectDir}"
-  environment "GOPATH", "${project.projectDir}"
+    workingDir "${project.projectDir}"
+    environment "GOPATH", "${project.projectDir}"
 
-  commandLine 'go', 'get', 'all'
+    commandLine 'go', 'get', 'all'
 }
 
-task goBuild(type:Exec) {
-  workingDir "${project.projectDir}"
-  environment "GOPATH", "${project.projectDir}"
 
-  commandLine 'go', 'build', '-o', "build/transtur_card_atm${platformExt}", 'src/transtur_card_atm/main/main.go'
+task goBuild(type:Exec) {
+    workingDir "${project.projectDir}"
+    environment "GOPATH", "${project.projectDir}"
+
+    commandLine 'go', 'build', '-o', "build/transtur_card_atm${platformExt}", 'src/transtur_card_atm/main/main.go'
 }
 
 
