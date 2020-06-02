@@ -6,11 +6,19 @@ ext {
     platformExt = isWindows ? ".exe": ""
 }
 
+
+task copyCss(type:Copy) {
+    from "web/node_modules/bootstrap/dist/css"
+    into "web/dist/resources/app/css/"
+    include "bootstrap.min.css"
+}
+
 task npmBuild(type:Exec) {
   workingDir "${project.projectDir}/web"
   
   commandLine 'npm', 'run', 'build'
 }
+npmBuild.dependsOn copyCss
 
 
 task goGetAll(type:Exec) {

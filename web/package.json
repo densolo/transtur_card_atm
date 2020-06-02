@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "clean": "rm -fR ./dist/* ./htmlpage/js/*bundle*.js* ./htmlpage/*.html",
-    "build": "bash build_web.sh",
+    "build": "webpack --config webpack.config.js",
     "compile": "tsc",
     "test": "jest --no-cache",
     "start": "webpack-dev-server --open"
