@@ -7,10 +7,10 @@ module.exports = {
     mode: 'development',
     output: {
         filename: 'main.transtur_atm.bundle.[hash].js',
-        path: path.resolve(__dirname, 'dist/resources/app')
+        path: path.resolve(__dirname, '../build/resources/app')
     },
     devServer: {
-            contentBase: path.resolve(__dirname, 'dist/resources/app'),
+            contentBase: path.resolve(__dirname, '../build/resources/app'),
     },
     plugins: [
         new HtmlWebpackPlugin({

@@ -7,6 +7,7 @@ import (
 	"time"
 	"encoding/json"
 
+	"transtur_card_atm/config"
 	"github.com/asticode/go-astikit"
 	"github.com/asticode/go-astilectron"
 	bootstrap "github.com/asticode/go-astilectron-bootstrap"
@@ -19,26 +20,22 @@ var (
 
 var (
 	AppName = "Transtur"
-	VersionAstilectron = "0.33.0"
-	VersionElectron = "6.1.2"
-	//AssetDir = "web/dist"
+	VersionAstilectron = "0.39.0"
+	VersionElectron = "7.1.10"
 )
 
 func RunGui() {
-	//flag.Parse()
 	l := log.New(log.Writer(), log.Prefix(), log.Flags())
 
 	err := bootstrap.Run(bootstrap.Options{
-		//Asset:    Asset,
-		//AssetDir: AssetDir,
 		AstilectronOptions: astilectron.Options{
 			AppName:            AppName,
 			//AppIconDarwinPath:  "resources/icon.icns",
 			//AppIconDefaultPath: "resources/icon.png",
 			SingleInstance:     true,
-			BaseDirectoryPath:  "web/dist",
-			//VersionAstilectron: VersionAstilectron,
-			//VersionElectron:    VersionElectron,
+			DataDirectoryPath:  config.GetAppRoot(),
+			VersionAstilectron: VersionAstilectron,
+			VersionElectron:    VersionElectron,
 		},
 		Debug:  *debug,
 		Logger: l,

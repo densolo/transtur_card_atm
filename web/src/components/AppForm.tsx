@@ -8,7 +8,8 @@ const AppForm = () => {
     const cardState = useSelector(state => state) as any;
   
     return (
-        <div className="text-center" style={{"position": "absolute", "top": "0", "bottom": "0", "left": "0", "right": "0"}}>
+        <div className="text-center" 
+            style={{"position": "absolute", "top": "0", "bottom": "0", "left": "15px", "right": "15px"}}>
             <div className="row h-100">
                 <div className="w-25"></div>
                 <div className="w-50 align-self-center">

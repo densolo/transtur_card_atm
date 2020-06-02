@@ -1,6 +1,10 @@
 
 import org.gradle.internal.os.OperatingSystem
 
+plugins {
+    id 'distribution'
+}
+
 ext {
     isWindows = OperatingSystem.current().isWindows()
     platformExt = isWindows ? ".exe": ""
@@ -9,7 +13,7 @@ ext {
 
 task copyCss(type:Copy) {
     from "web/node_modules/bootstrap/dist/css"
-    into "web/dist/resources/app/css/"
+    into "build/resources/app/css/"
     include "bootstrap.min.css"
 }
 
@@ -32,7 +36,7 @@ task goBuild(type:Exec) {
   workingDir "${project.projectDir}"
   environment "GOPATH", "${project.projectDir}"
 
-  commandLine 'go', 'build', '-o', "bin/transtur_card_atm${platformExt}", 'src/transtur_card_atm/main/main.go'
+  commandLine 'go', 'build', '-o', "build/transtur_card_atm${platformExt}", 'src/transtur_card_atm/main/main.go'
 }
 
 
@@ -45,8 +49,21 @@ task goTest(type:Exec) {
 
 
 task goRun(type:Exec) {
-  workingDir "${project.projectDir}"
+  workingDir "${project.projectDir}/build"
   environment "GOPATH", "${project.projectDir}"
 
-  commandLine 'go', 'run', 'src/transtur_card_atm/main/main.go'
+  commandLine "../build/transtur_card_atm${platformExt}"
 }
+goRun.dependsOn goBuild
+
+
+distZip {
+    from('build') {
+        into ''
+        include 'vendor/**/*',
+            'resources/**/*',
+            'transtur_card_atm',
+            'transtur_card_atm.exe'
+    }
+}
+distZip.dependsOn goBuild, npmBuild
