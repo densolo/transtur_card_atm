@@ -39,13 +39,15 @@ func ServeCardFiles() {
 			err = SaveDdd(cardData, fileName)
 		}
 
+		if err == nil {
+			WaitCardEjected(reader)
+		}
 		time.Sleep(15 * time.Second)
 	}
 }
 
 
 func WaitAndReadCard(reader string) (dddFile []byte, err error) {
-
 	GlobalStateHandler.SendGreyState("Checking card readers")
 	time.Sleep(time.Second)
 	if err = tachocard_reader.CheckEnableReaders(); err != nil {
@@ -61,4 +63,23 @@ func WaitAndReadCard(reader string) (dddFile []byte, err error) {
 
 	GlobalStateHandler.SendBlueState("Reading the card")
 	return tachocard_reader.ReadСard("", indexReader)
+}
+
+func WaitCardEjected(reader string) {
+	log.Printf("WaitCardEjected")
+	for {
+		if err := tachocard_reader.CheckEnableReaders(); err != nil {
+			log.Printf("WaitCardEjected card reader not found: %s", err.Error())
+			return
+		}
+
+		_, err := tachocard_reader.WaitCard(reader)
+		if err != nil {
+			log.Printf("WaitCardEjected card was ejected: %s", err.Error())
+			return
+		}
+
+		log.Printf("WaitCardEjected card is in the reader")
+		time.Sleep(time.Second)
+	}
 }
