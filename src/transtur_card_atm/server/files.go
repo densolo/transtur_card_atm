@@ -36,9 +36,19 @@ func CreateFileName(ef readesm.EsmFile, now time.Time) string {
 }
 
 func SaveDdd(cardData []byte, fileName string) error {	
+	GlobalStateHandler.SendBlueState("Saving card data into a file")
 	filePath := filepath.Join(config.GetUploadDir(), fileName)
 	log.Printf("SaveDdd into %s", filePath)
 
-	return ioutil.WriteFile(filePath, cardData, 0644)
+	err := ioutil.WriteFile(filePath, cardData, 0644)
+	if err != nil {
+		log.Printf("Failed to save file %s: %s", filePath, err.Error())
+		GlobalStateHandler.SendRedState("Save file failure")
+		return nil
+	}
+		
+	log.Printf("File save completed: %s", filePath)
+	GlobalStateHandler.SendBlueState("Completed. Take your card.")
+	return nil
 }
 

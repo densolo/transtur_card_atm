@@ -5,12 +5,9 @@ test-logs/
 src/transtur_card_atm/tests/test-data
 *.log*
 .*
-src/github.com
+src
 !src/github.com/kuznetsovin
-src/golang.org/
-src/cloud.google.com/
-src/gopkg.in/
-src/google.golang.org/
+!src/transtur_card_atm
 pkg/
 runtime/
 node_modules

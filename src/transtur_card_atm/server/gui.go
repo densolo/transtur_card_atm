@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"log"
 	"time"
-	"encoding/json"
+	//"encoding/json"
 
 	"transtur_card_atm/config"
 	"github.com/asticode/go-astikit"
@@ -15,7 +15,7 @@ import (
 
 var (
 	debug = flag.Bool("d", true, "enables the debug mode")
-	w     *astilectron.Window = nil
+	appWindow     *astilectron.Window = nil
 )
 
 var (
@@ -25,7 +25,8 @@ var (
 )
 
 func RunGui() {
-	l := log.New(log.Writer(), log.Prefix(), log.Flags())
+	appConfig := config.GetAppConfig()
+	guiLogger := log.New(log.Writer(), log.Prefix(), log.Flags())
 
 	err := bootstrap.Run(bootstrap.Options{
 		AstilectronOptions: astilectron.Options{
@@ -37,17 +38,26 @@ func RunGui() {
 			VersionAstilectron: VersionAstilectron,
 			VersionElectron:    VersionElectron,
 		},
-		Debug:  *debug,
-		Logger: l,
+		
+		Logger: guiLogger,
+
+		MenuOptions: []*astilectron.MenuItemOptions{{
+			Label: astikit.StrPtr("File"),
+			SubMenu: []*astilectron.MenuItemOptions{
+				{
+					Label: astikit.StrPtr("Developer Tools"),
+					OnClick: handleDevTools,
+				},
+				{
+					Label: astikit.StrPtr("FTP Test Upload"),
+					OnClick: handleFtpTestUpload,
+				},
+				{Role: astilectron.MenuItemRoleClose},
+			},
+		}},
 
 		OnWait: func(_ *astilectron.Astilectron, ws []*astilectron.Window, _ *astilectron.Menu, _ *astilectron.Tray, _ *astilectron.Menu) error {
-			w = ws[0]
-			go func() {
-				time.Sleep(5 * time.Second)
-				if err := bootstrap.SendMessage(w, "check.out.menu", "Don't forget to check out the menu!"); err != nil {
-					l.Println(fmt.Errorf("sending check.out.menu event failed: %w", err))
-				}
-			}()
+			appWindow = ws[0]
 			return nil
 		},
 
@@ -59,11 +69,26 @@ func RunGui() {
 				Center:          astikit.BoolPtr(true),
 				Height:          astikit.IntPtr(700),
 				Width:           astikit.IntPtr(700),
+				Frame:           astikit.BoolPtr(appConfig.Debug),
 			},
 		}},
 	})
 	if err != nil {
-		l.Fatal(fmt.Errorf("running bootstrap failed: %w", err))
+		log.Fatal(fmt.Errorf("running bootstrap failed: %w", err))
+	}
+}
+
+func GetGuiWindow() *astilectron.Window {
+	return appWindow
+}
+
+func WaitGuiWindow() *astilectron.Window {
+	for {
+		w := GetGuiWindow()
+		if w != nil {
+			return w
+		}
+		time.Sleep(1 * time.Second)
 	}
 }
 
@@ -72,35 +97,12 @@ func handleMessages(_ *astilectron.Window, m bootstrap.MessageIn) (payload inter
 	return
 }
 
-func SendRedState(text string) {
-	SendCardState("danger", text)
+func handleDevTools(e astilectron.Event) (deleteListener bool) {
+	GetGuiWindow().OpenDevTools()						
+	return
 }
 
-func SendGreyState(text string) {
-	SendCardState("secondary", text)
-}
-
-func SendBlueState(text string) {
-	SendCardState("primary", text)
-}
-
-
-func SendCardState(color string, text string) {
-	log.Printf("SendCardState: %s - %s", color, text)
-
-	msg := CardMessage{
-		CardStateColor: color,
-		CardStateText: text,
-	}
-	
-	msg_json, err := json.MarshalIndent(msg, "", "    ")	
-	if err != nil {
-		log.Printf("Failed to serialize json: %s", err.Error())
-		return
-	}
-
-	log.Printf("SendCardState json: %s", string(msg_json))
-	if w != nil {
-		bootstrap.SendMessage(w, "update", string(msg_json))
-	}
+func handleFtpTestUpload(e astilectron.Event) (deleteListener bool) {
+	UploadFtp([]byte("transtur_card_atm test upload\n"), "ftp-test.txt")
+	return
 }

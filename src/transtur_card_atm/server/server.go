@@ -5,22 +5,25 @@ import (
 	"time"
 	"github.com/kuznetsovin/go_tachograph_card/tachocard_reader"
 	"transtur_card_atm/readesm"
+	"transtur_card_atm/config"
 )
 
 
-func ServeCardFiles(reader string) {
+func ServeCardFiles() {
+	appConfig := config.GetAppConfig()
+	reader := appConfig.ReaderName
 	log.Printf("Serving cards (reader: %s)", reader)
 
 	for {
 		cardData, err := WaitAndReadCard(reader)
 		if err != nil {
 			log.Printf("Failed to read a card data: " + err.Error())
-			SendRedState(err.Error())
+			GlobalStateHandler.SendRedState(err.Error())
 			time.Sleep(15 * time.Second)
 			continue
 		}
 
-		SendBlueState("Parsing Card Data")
+		GlobalStateHandler.SendBlueState("Parsing Card Data")
 		ef, err := readesm.ParseData(cardData)
 		if (err != nil) {
 			log.Printf("Failed to parse DDD: %s", err)
@@ -28,16 +31,14 @@ func ServeCardFiles(reader string) {
 			continue
 		}
 
-		SendBlueState("Saving Card Data")
 		fileName := CreateFileName(ef, time.Now())
-		err = SaveDdd(cardData, fileName)
-		if (err != nil) {
-			log.Printf("Failed to save file %s: %s", fileName, err)
-			time.Sleep(15 * time.Second)
-			continue
+
+		if appConfig.FtpServer != "" {
+			err = UploadFtp(cardData, fileName)
+		} else {
+			err = SaveDdd(cardData, fileName)
 		}
 
-		SendBlueState("Completed")
 		time.Sleep(15 * time.Second)
 	}
 }
@@ -45,17 +46,19 @@ func ServeCardFiles(reader string) {
 
 func WaitAndReadCard(reader string) (dddFile []byte, err error) {
 
-	SendGreyState("Checking card readers")
+	GlobalStateHandler.SendGreyState("Checking card readers")
+	time.Sleep(time.Second)
 	if err = tachocard_reader.CheckEnableReaders(); err != nil {
 		return []byte{}, err
 	}
 
-	SendGreyState("Waiting a card")
+	GlobalStateHandler.SendGreyState("Waiting a card")
+	time.Sleep(time.Second)
 	indexReader, err := tachocard_reader.WaitCard(reader)
 	if err != nil {
 		return []byte{}, err
 	}
 
-	SendBlueState("Reading the card")
+	GlobalStateHandler.SendBlueState("Reading the card")
 	return tachocard_reader.ReadСard("", indexReader)
 }

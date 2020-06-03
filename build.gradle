@@ -5,6 +5,8 @@ plugins {
     id 'distribution'
 }
 
+version = "0.0.1"
+
 ext {
     isWindows = OperatingSystem.current().isWindows()
     platformExt = isWindows ? ".exe": ""
@@ -61,7 +63,7 @@ task goRun(type:Exec) {
   workingDir "${project.projectDir}/build"
   environment "GOPATH", "${project.projectDir}"
 
-  commandLine "../build/transtur_card_atm${platformExt}"
+  commandLine "${project.projectDir}/build/transtur_card_atm${platformExt}"
 }
 goRun.dependsOn goBuild
 
@@ -73,6 +75,10 @@ distZip {
             'resources/**/*',
             'transtur_card_atm',
             'transtur_card_atm.exe'
+    }
+
+    from('conf') {
+        into ''
     }
 }
 distZip.dependsOn goBuild, npmBuild

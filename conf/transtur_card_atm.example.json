@@ -1,0 +1,9 @@
+{
+    "debug": true,
+    "card_reader_name": "Smart",
+    "local_save_path": "TCReaderUpload",
+    "ftp_server": "<server>:<port>",
+    "ftp_upload_path": "card_data_atm",
+    "ftp_user": "",
+    "ftp_pass": ""
+}
