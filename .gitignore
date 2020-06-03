@@ -5,9 +5,8 @@ test-logs/
 src/transtur_card_atm/tests/test-data
 *.log*
 .*
-src
+src/*.*
 !src/github.com/kuznetsovin
-!src/transtur_card_atm
 pkg/
 runtime/
 node_modules
