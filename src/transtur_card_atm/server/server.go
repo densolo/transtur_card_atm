@@ -42,7 +42,7 @@ func ServeCardFiles() {
 		if err == nil {
 			WaitCardEjected(reader)
 		}
-		time.Sleep(15 * time.Second)
+		time.Sleep(2 * time.Second)
 	}
 }
 
