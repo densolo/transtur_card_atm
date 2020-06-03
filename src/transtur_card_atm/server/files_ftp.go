@@ -6,14 +6,14 @@ import (
 	"time"
 	"bytes"
 	"errors"
-	"path/filepath"
+	"strings"
 	"github.com/jlaffaye/ftp"
 	"transtur_card_atm/config"
 )
 
 func UploadFtp(cardData []byte, fileName string) error {
 	appConfig := config.GetAppConfig()
-	filePath := filepath.Join(appConfig.FtpUploadPath, fileName)
+	filePath := strings.TrimRight(appConfig.FtpUploadPath, "/") + "/" + fileName
 	log.Printf("UploadFtp on %s into %s", appConfig.FtpServer, filePath)
 
 	GlobalStateHandler.SendBlueState("Uploading a file on FTP")
