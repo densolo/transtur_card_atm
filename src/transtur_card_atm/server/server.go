@@ -19,7 +19,7 @@ func ServeCardFiles() {
 		if err != nil {
 			log.Printf("Failed to read a card data: " + err.Error())
 			GlobalStateHandler.SendRedState(err.Error())
-			time.Sleep(15 * time.Second)
+			time.Sleep(5 * time.Second)
 			continue
 		}
 
@@ -27,7 +27,7 @@ func ServeCardFiles() {
 		ef, err := readesm.ParseData(cardData)
 		if (err != nil) {
 			log.Printf("Failed to parse DDD: %s", err)
-			time.Sleep(15 * time.Second)
+			time.Sleep(5 * time.Second)
 			continue
 		}
 
