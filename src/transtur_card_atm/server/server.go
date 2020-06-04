@@ -31,7 +31,7 @@ func ServeCardFiles() {
 			continue
 		}
 
-		fileName := CreateFileName(ef, time.Now())
+		fileName := CreateFileName(ef, time.Now().UTC())
 
 		if appConfig.FtpServer != "" {
 			err = UploadFtp(cardData, fileName)
@@ -40,7 +40,7 @@ func ServeCardFiles() {
 		}
 
 		if err == nil {
-			WaitCardEjected(reader)
+			tachocard_reader.WaitCardEjected(reader)
 		}
 		time.Sleep(2 * time.Second)
 	}
@@ -63,23 +63,4 @@ func WaitAndReadCard(reader string) (dddFile []byte, err error) {
 
 	GlobalStateHandler.SendBlueState("Reading the card")
 	return tachocard_reader.ReadСard("", indexReader)
-}
-
-func WaitCardEjected(reader string) {
-	log.Printf("WaitCardEjected")
-	for {
-		if err := tachocard_reader.CheckEnableReaders(); err != nil {
-			log.Printf("WaitCardEjected card reader not found: %s", err.Error())
-			return
-		}
-
-		_, err := tachocard_reader.WaitCard(reader)
-		if err != nil {
-			log.Printf("WaitCardEjected card was ejected: %s", err.Error())
-			return
-		}
-
-		log.Printf("WaitCardEjected card is in the reader")
-		time.Sleep(time.Second)
-	}
 }
