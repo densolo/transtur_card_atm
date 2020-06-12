@@ -146,7 +146,7 @@ func waitUntilCardEjected(ctx *scard.Context, readers []string, indexReader int)
 				break
 			}
 		}
-		if inserted {
+		if !inserted {
 			return
 		}
 
