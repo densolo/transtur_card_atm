@@ -15,7 +15,7 @@ func ServeCardFiles() {
 	log.Printf("Serving cards (reader: %s)", reader)
 
 	for {
-		cardData, err := WaitAndReadCard(reader)
+		indexReader, cardData, err := WaitAndReadCard(reader)
 		if err != nil {
 			log.Printf("Failed to read a card data: " + err.Error())
 			GlobalStateHandler.SendRedState(err.Error())
@@ -40,27 +40,28 @@ func ServeCardFiles() {
 		}
 
 		if err == nil {
-			tachocard_reader.WaitCardEjected(reader)
+			tachocard_reader.WaitCardEjected(indexReader)
 		}
 		time.Sleep(2 * time.Second)
 	}
 }
 
 
-func WaitAndReadCard(reader string) (dddFile []byte, err error) {
+func WaitAndReadCard(reader string) (indexReader int, dddFile []byte, err error) {
 	GlobalStateHandler.SendGreyState("Checking card readers")
 	time.Sleep(time.Second)
 	if err = tachocard_reader.CheckEnableReaders(); err != nil {
-		return []byte{}, err
+		return -1, []byte{}, err
 	}
 
 	GlobalStateHandler.SendGreyState("Waiting a card")
 	time.Sleep(time.Second)
-	indexReader, err := tachocard_reader.WaitCard(reader)
+	indexReader, err = tachocard_reader.WaitCard(reader)
 	if err != nil {
-		return []byte{}, err
+		return -1, []byte{}, err
 	}
 
 	GlobalStateHandler.SendBlueState("Reading the card")
-	return tachocard_reader.ReadСard("", indexReader)
+	data, err := tachocard_reader.ReadСard("", indexReader)
+	return indexReader, data, err
 }

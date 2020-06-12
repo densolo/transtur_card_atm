@@ -45,7 +45,7 @@ func WaitCard(reader string) (int, error) {
 	return waitUntilCardPresent(ctx, readers, reader)
 }
 
-func WaitCardEjected(reader string)(err error) {
+func WaitCardEjected(indexReader int)(err error) {
 	log.Printf("WaitCardEjected")
 	ctx, err := scard.EstablishContext()
 	if err != nil {
@@ -60,7 +60,7 @@ func WaitCardEjected(reader string)(err error) {
 		return err
 	}
 
-	waitUntilCardEjected(ctx, readers, reader)
+	waitUntilCardEjected(ctx, readers, indexReader)
 	return nil
 }
 
@@ -124,8 +124,8 @@ func waitUntilCardPresent(ctx *scard.Context, readers []string, readerPattern st
 	}
 }
 
-func waitUntilCardEjected(ctx *scard.Context, readers []string, readerPattern string) {
-	log.Printf("Waiting until a card is ejected (reader: %s)", readerPattern)
+func waitUntilCardEjected(ctx *scard.Context, readers []string, indexReader int) {
+	log.Printf("Waiting until a card is ejected (reader index: %d)", indexReader)
 
 	rs := make([]scard.ReaderState, len(readers))
 	for i := range rs {
@@ -136,11 +136,12 @@ func waitUntilCardEjected(ctx *scard.Context, readers []string, readerPattern st
 	for {
 		inserted := false
 		for i := range rs {
+			if i != indexReader {
+				continue
+			}
+			
 			log.Printf("Card state at reader [%d] '%s': %d", i, rs[i].Reader, rs[i].EventState)
 			if rs[i].EventState & scard.StatePresent != 0 {
-				if (readerPattern != "" && !strings.Contains(strings.ToLower(rs[i].Reader), strings.ToLower(readerPattern))) {
-					continue
-				}
 				inserted = true
 				break
 			}
