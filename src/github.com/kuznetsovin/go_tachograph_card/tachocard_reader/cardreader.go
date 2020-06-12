@@ -135,6 +135,12 @@ func waitUntilCardEjected(ctx *scard.Context, readers []string, indexReader int)
 
 	for {
 		inserted := false
+
+		err := ctx.GetStatusChange(rs, -1)
+		if err != nil {
+			log.Printf("Card state error: %s", err.Error())
+		}
+		
 		for i := range rs {
 			if i != indexReader {
 				continue
