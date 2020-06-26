@@ -79,12 +79,15 @@ func CardConnect(indexReader int) (*scard.Context, *scard.Card, error) {
 	log.Println("Connecting to a card ", currentReader)
 	card, err := ctx.Connect(currentReader, scard.ShareExclusive, scard.ProtocolAny)
 	if err != nil {
-		log.Println(err)
+		log.Printf("Connect failed: %s", err.Error())
+		ctx.Release()
 		return nil, nil, errors.New("Unable to read a card")
 	}
 
 	log.Println("Card status:")
 	if status, err := card.Status(); err != nil {
+		log.Println("Card status failure: %s", err.Error())
+		ctx.Release()
 		return nil, nil, err
 	} else {
 		log.Println("Reader: ", status.Reader)
@@ -140,7 +143,7 @@ func waitUntilCardEjected(ctx *scard.Context, readers []string, indexReader int)
 		if err != nil {
 			log.Printf("Card state error: %s", err.Error())
 		}
-		
+
 		for i := range rs {
 			if i != indexReader {
 				continue
@@ -156,6 +159,18 @@ func waitUntilCardEjected(ctx *scard.Context, readers []string, indexReader int)
 			return
 		}
 
+		time.Sleep(time.Second)
+	}
+}
+
+func waitUntilCardEjectedV2(indexReader int) {
+	log.Printf("Waiting until a card is ejected v2 (reader index: %d)", indexReader)
+	for {
+		ctx, _, err := CardConnect(indexReader)
+		if err != nil {
+			return
+		}
+		ctx.Release()
 		time.Sleep(time.Second)
 	}
 }

@@ -9,7 +9,7 @@ Prerequisites:
 Install depedencies:
 ```
 gradlew npmInstall
-gradlew goGetAll
+gradlew goGetAll    # skip errors on missing dependencies
 ```
 
 Build
@@ -21,9 +21,20 @@ Find a distributive in build/distributions/transtur_card_atm.zip
 
 Or start directly bin/transtur_card_atm.exe
 
+# How to develop UI
+
+UI is located under the web folder. web/htmlpage/index.html.template is an entry page that execute a js bundle.
+
+UI is implemented in React/TypeScript, e.g. web/src/components/AppForm.tsx
+
+1. Start a standalone dev server to compile 
+```
+npm run start
+```
+2. Open http://localhost:8080/
+
 
 ## How to use
-
 
 Create a file transtur_card_atm.json in the application folder.
 
