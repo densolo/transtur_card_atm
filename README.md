@@ -21,11 +21,13 @@ Find a distributive in build/distributions/transtur_card_atm.zip
 
 Or start directly bin/transtur_card_atm.exe
 
+
 # How to develop UI
 
-UI is located under the web folder. web/htmlpage/index.html.template is an entry page that execute a js bundle.
+UI is compiled with the full build however it is possible to run it separately to reduce time.
+UI is located under the web folder. web/htmlpage/index.html.template is an entry page that execute a js bundle that is implemented in React/TypeScript. See web/src/components/AppForm.tsx for the main form.
 
-UI is implemented in React/TypeScript, e.g. web/src/components/AppForm.tsx
+To run dev server:
 
 1. Start a standalone dev server to compile 
 ```
@@ -33,6 +35,10 @@ npm run start
 ```
 2. Open http://localhost:8080/
 
+To rebuild js bundle:
+```
+npm run build
+```
 
 ## How to use
 
