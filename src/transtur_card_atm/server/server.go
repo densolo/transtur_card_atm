@@ -18,7 +18,7 @@ func ServeCardFiles() {
 		indexReader, cardData, err := WaitAndReadCard(reader)
 		if err != nil {
 			log.Printf("Failed to read a card data: " + err.Error())
-			GlobalStateHandler.SendRedState(err.Error())
+			GlobalStateHandler.SendRedState("Read card error: {}".format(err.Error()))
 			time.Sleep(5 * time.Second)
 			continue
 		}
