@@ -1,13 +1,14 @@
 package server
 
 import (
+	"fmt"
 	"log"
 	"time"
-	"github.com/kuznetsovin/go_tachograph_card/tachocard_reader"
-	"transtur_card_atm/readesm"
 	"transtur_card_atm/config"
-)
+	"transtur_card_atm/readesm"
 
+	"github.com/kuznetsovin/go_tachograph_card/tachocard_reader"
+)
 
 func ServeCardFiles() {
 	appConfig := config.GetAppConfig()
@@ -18,14 +19,14 @@ func ServeCardFiles() {
 		indexReader, cardData, err := WaitAndReadCard(reader)
 		if err != nil {
 			log.Printf("Failed to read a card data: " + err.Error())
-			GlobalStateHandler.SendRedState("Read card error: {}".format(err.Error()))
+			GlobalStateHandler.SendRedState(fmt.Sprintf("Read card error: %s", err.Error()))
 			time.Sleep(5 * time.Second)
 			continue
 		}
 
 		GlobalStateHandler.SendBlueState("Parsing Card Data")
 		ef, err := readesm.ParseData(cardData)
-		if (err != nil) {
+		if err != nil {
 			log.Printf("Failed to parse DDD: %s", err)
 			time.Sleep(5 * time.Second)
 			continue
@@ -34,6 +35,8 @@ func ServeCardFiles() {
 		fileName := CreateFileName(ef, time.Now().UTC())
 
 		if appConfig.FtpServer != "" {
+			SaveDdd(cardData, fileName)
+
 			err = UploadFtp(cardData, fileName)
 		} else {
 			err = SaveDdd(cardData, fileName)
@@ -45,7 +48,6 @@ func ServeCardFiles() {
 		time.Sleep(2 * time.Second)
 	}
 }
-
 
 func WaitAndReadCard(reader string) (indexReader int, dddFile []byte, err error) {
 	GlobalStateHandler.SendGreyState("Checking card readers")
