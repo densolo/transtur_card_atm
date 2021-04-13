@@ -57,7 +57,7 @@ func RunGui() {
 		}},
 
 		OnWait: func(_ *astilectron.Astilectron, ws []*astilectron.Window, _ *astilectron.Menu, _ *astilectron.Tray, _ *astilectron.Menu) error {
-			appWindow = ws[0]
+			appWindow = ws[0]			
 			return nil
 		},
 
@@ -70,11 +70,14 @@ func RunGui() {
 				Height:          astikit.IntPtr(700),
 				Width:           astikit.IntPtr(700),
 				Frame:           astikit.BoolPtr(appConfig.Debug),
+				Fullscreen:      astikit.BoolPtr(!appConfig.Debug),
+				AlwaysOnTop:     astikit.BoolPtr(!appConfig.Debug),
 			},
 		}},
 	})
 	if err != nil {
 		log.Fatal(fmt.Errorf("running bootstrap failed: %w", err))
+
 	}
 }
 
