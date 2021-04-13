@@ -57,7 +57,7 @@ func RunGui() {
 		}},
 
 		OnWait: func(_ *astilectron.Astilectron, ws []*astilectron.Window, _ *astilectron.Menu, _ *astilectron.Tray, _ *astilectron.Menu) error {
-			appWindow = ws[0]			
+			appWindow = ws[0
 			return nil
 		},
 
